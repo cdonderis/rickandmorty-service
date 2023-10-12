@@ -1,14 +1,20 @@
 package com.cdonderis.rickandmorty.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Episode {
     private String name;
 
-    private Date creationDate;
+
+    private String airDate;
 
     public String getName() {
         return name;
@@ -18,11 +24,13 @@ public class Episode {
         this.name = name;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    @JsonProperty("air_date")
+    public String getAirDate() {
+        return airDate;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    @JsonIgnore
+    public void setAirDate(String airDate) {
+        this.airDate = airDate;
     }
 }
