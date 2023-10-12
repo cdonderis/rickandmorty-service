@@ -25,16 +25,6 @@ public class CharacterInfoResource {
 
     private final Logger log = LoggerFactory.getLogger(CharacterInfoResource.class);
 
-    /**
-     * Endpoint to verify status connection.
-     *
-     * @return
-     */
-    @GetMapping("/test")
-    public ResponseEntity<String> connectionTest() {
-        log.info("Rest connection enabled");
-        return ResponseEntity.ok("OK");
-    }
 
     @GetMapping("/findByName/{name}")
     public ResponseEntity< List<CharacterInfo> > findByName(@PathVariable(value = "name") String name){
@@ -45,6 +35,5 @@ public class CharacterInfoResource {
         }
 
         return ResponseEntity.ok(characters);
-
     }
 }

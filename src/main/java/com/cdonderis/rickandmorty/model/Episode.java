@@ -24,12 +24,10 @@ public class Episode {
         this.name = name;
     }
 
-    @JsonProperty("air_date")
     public String getAirDate() {
         return airDate;
     }
 
-    @JsonIgnore
     public void setAirDate(String airDate) {
         this.airDate = airDate;
     }
