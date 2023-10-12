@@ -1,7 +1,10 @@
 package com.cdonderis.rickandmorty.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
+@JsonIgnoreProperties
 public class Episode {
     private String name;
 

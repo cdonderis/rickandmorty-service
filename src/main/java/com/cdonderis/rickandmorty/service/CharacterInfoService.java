@@ -11,7 +11,7 @@ public interface CharacterInfoService {
      * @param characterName
      * @return List of characters
      */
-    List<CharacterInfo> findByName(String characterName);
+    List<CharacterInfo> findCharactersById(String characterName);
 
 
 }

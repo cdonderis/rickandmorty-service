@@ -38,6 +38,8 @@ public class CharacterInfoResource {
 
     @GetMapping("/findByName/{name}")
     public ResponseEntity< List<CharacterInfo> > findByName(@PathVariable(value = "name") String name){
+        List<CharacterInfo> characters = characterInfoService.findCharactersById(name);
+
         return null;
     }
 }
