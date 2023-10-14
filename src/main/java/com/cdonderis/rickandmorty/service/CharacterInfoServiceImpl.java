@@ -45,6 +45,7 @@ public class CharacterInfoServiceImpl implements CharacterInfoService {
     public List<CharacterDTO> findCharactersByName(String name) {
         log.info("Searching characters by name {}", name);
         try {
+            //Coverage
             if (name.isEmpty()) {
                 log.info("Empty name");
                 return null;
@@ -55,6 +56,7 @@ public class CharacterInfoServiceImpl implements CharacterInfoService {
 
             List<CharacterInfo> characters = CharacterInfoMapper.mapJsonToCharacterInfo(completeResponse.getBody());
 
+            //Coverage
             if (characters == null || characters.isEmpty()) {
                 log.info("We can't find results for character named {} ", name);
                 return null;
@@ -69,7 +71,7 @@ public class CharacterInfoServiceImpl implements CharacterInfoService {
             }
 
             return charactersResponse;
-
+            //Coverage
         } catch (Exception e) {
             log.error("We can't find a character named {}", name);
             return null;
@@ -123,6 +125,7 @@ public class CharacterInfoServiceImpl implements CharacterInfoService {
         for (Episode episode : episodeList) {
             Date episodeDate = DateFormatter.dateFormatString(episode.getAirDate());
             if (episodeDate.before(firsAppareance)) {
+                //Coverage
                 firsAppareance = episodeDate;
             }
         }

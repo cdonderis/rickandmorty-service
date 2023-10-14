@@ -25,4 +25,12 @@ public class Episode {
     public void setAirDate(String airDate) {
         this.airDate = airDate;
     }
+
+    public Episode() {
+    }
+
+    public Episode(String name, String airDate) {
+        this.name = name;
+        this.airDate = airDate;
+    }
 }
