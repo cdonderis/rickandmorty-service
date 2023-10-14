@@ -2,6 +2,7 @@ package com.cdonderis.rickandmorty.resource;
 
 
 import com.cdonderis.rickandmorty.model.CharacterInfo;
+import com.cdonderis.rickandmorty.model.dto.CharacterDTO;
 import com.cdonderis.rickandmorty.service.CharacterInfoService;
 import org.apache.coyote.Response;
 import org.slf4j.Logger;
@@ -27,10 +28,10 @@ public class CharacterInfoResource {
 
 
     @GetMapping("/findByName/{name}")
-    public ResponseEntity< List<CharacterInfo> > findByName(@PathVariable(value = "name") String name){
-        List<CharacterInfo> characters = characterInfoService.findCharactersById(name);
+    public ResponseEntity<List<CharacterDTO>> findByName(@PathVariable(value = "name") String name) {
+        List<CharacterDTO> characters = characterInfoService.findCharactersByName(name);
 
-        if (characters == null || characters.isEmpty()){
+        if (characters == null || characters.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 

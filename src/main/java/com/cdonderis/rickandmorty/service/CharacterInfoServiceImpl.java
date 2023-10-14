@@ -2,6 +2,7 @@ package com.cdonderis.rickandmorty.service;
 
 import com.cdonderis.rickandmorty.model.CharacterInfo;
 import com.cdonderis.rickandmorty.model.Episode;
+import com.cdonderis.rickandmorty.model.dto.CharacterDTO;
 import com.cdonderis.rickandmorty.utils.CharacterInfoMapper;
 import com.cdonderis.rickandmorty.utils.DateFormatter;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,7 +36,13 @@ public class CharacterInfoServiceImpl implements CharacterInfoService {
         return restTemplate;
     }
 
-    public List<CharacterInfo> findCharactersById(String name) {
+    /**
+     * Service to return list of characters with an input name
+     *
+     * @param name
+     * @return
+     */
+    public List<CharacterDTO> findCharactersByName(String name) {
         log.info("Searching characters by name {}", name);
         try {
             if (name.isEmpty()) {
@@ -46,16 +53,22 @@ public class CharacterInfoServiceImpl implements CharacterInfoService {
             ResponseEntity<String> completeResponse = restTemplate.exchange(BASE_URL + "/?name=" + name,
                     HttpMethod.GET, null, String.class);
 
-            List<CharacterInfo> mappedResult = CharacterInfoMapper.mapJsonToCharacterInfo(completeResponse.getBody());
+            List<CharacterInfo> characters = CharacterInfoMapper.mapJsonToCharacterInfo(completeResponse.getBody());
 
-            if (mappedResult == null || mappedResult.isEmpty()){
+            if (characters == null || characters.isEmpty()) {
                 log.info("We can't find results for character named {} ", name);
-                return  null;
+                return null;
             }
 
-            setEpisodesInCharacter(mappedResult);
+            setEpisodesInCharacter(characters);
 
-            return mappedResult;
+            List<CharacterDTO> charactersResponse = new ArrayList<>();
+
+            for (CharacterInfo character : characters) {
+                charactersResponse.add(mapDTO(character));
+            }
+
+            return charactersResponse;
 
         } catch (Exception e) {
             log.error("We can't find a character named {}", name);
@@ -76,12 +89,11 @@ public class CharacterInfoServiceImpl implements CharacterInfoService {
                 episodeList.add(episodeInfo);
             }
             character.setEpisodes(episodeList);
-            character.setFirstApppearance(searchFirstAppareance(episodeList));
         }
     }
 
     /**
-     * Function to get episode Information from path
+     * Function to get episode information from path
      *
      * @param pathEpisode
      * @return Episode
@@ -100,6 +112,7 @@ public class CharacterInfoServiceImpl implements CharacterInfoService {
 
     /**
      * Function to obtain first Appareance
+     *
      * @param episodeList
      * @return
      * @throws ParseException
@@ -107,12 +120,37 @@ public class CharacterInfoServiceImpl implements CharacterInfoService {
     private Date searchFirstAppareance(List<Episode> episodeList) throws ParseException {
         Date firsAppareance = DateFormatter.dateFormatString(episodeList.get(0).getAirDate());
 
-        for(Episode episode : episodeList){
+        for (Episode episode : episodeList) {
             Date episodeDate = DateFormatter.dateFormatString(episode.getAirDate());
-            if (episodeDate.before(firsAppareance)){
+            if (episodeDate.before(firsAppareance)) {
                 firsAppareance = episodeDate;
             }
         }
         return firsAppareance;
+    }
+
+    /**
+     * Set DTO params to adapt the response
+     *
+     * @param characterInfo
+     * @return
+     * @throws ParseException
+     */
+    private CharacterDTO mapDTO(CharacterInfo characterInfo) throws ParseException {
+        //Extract names of each episode to set after
+        List<String> episodeNames = new ArrayList<>();
+        for (Episode episode : characterInfo.getEpisodes()) {
+            if (episode.getName() != null) {
+                episodeNames.add(episode.getName());
+            }
+        }
+
+        CharacterDTO characterResponse = new CharacterDTO(
+                characterInfo.getName(),
+                episodeNames,
+                searchFirstAppareance(characterInfo.getEpisodes())
+        );
+
+        return characterResponse;
     }
 }

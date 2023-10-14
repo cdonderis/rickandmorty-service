@@ -17,12 +17,7 @@ In utils package locates RestTemplateConfig, to implement deserialize and mappin
 class to mapped JSON with my object "CharacterInfo" and DateFormatter to work with string data format from API.
 
 I created two models to difference between Character information and Episode Information, and I only deserialized 
-attributes that I have needed at business logic.
+attributes that I have needed at business logic. To adapt response I created a Data Transfer Object named CharacterDTO.
 
-I have not develop test because I don't have time to continue, and the finally response of my service need a DTO
-to return only the specified attributes. 
-
-
-I hope you value the rest of the project, all the best!
 
 

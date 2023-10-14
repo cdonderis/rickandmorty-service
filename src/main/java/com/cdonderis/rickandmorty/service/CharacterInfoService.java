@@ -1,6 +1,7 @@
 package com.cdonderis.rickandmorty.service;
 
 import com.cdonderis.rickandmorty.model.CharacterInfo;
+import com.cdonderis.rickandmorty.model.dto.CharacterDTO;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface CharacterInfoService {
      * @param characterName
      * @return List of characters
      */
-    List<CharacterInfo> findCharactersById(String characterName);
+    List<CharacterDTO> findCharactersByName(String characterName);
 
 
 }
