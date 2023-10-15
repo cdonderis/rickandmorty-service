@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Character business
+ */
 @Service
 public class CharacterInfoServiceImpl implements CharacterInfoService {
 

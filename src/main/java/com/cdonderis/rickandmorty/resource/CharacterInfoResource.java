@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
+/**
+ * Resource with character end-points
+ */
 @RestController
 @RequestMapping("/character")
 public class CharacterInfoResource {

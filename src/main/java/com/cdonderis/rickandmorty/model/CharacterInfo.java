@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+/**
+ * Entity to obtain main Character information
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CharacterInfo {
 

@@ -3,6 +3,9 @@ package com.cdonderis.rickandmorty.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Entity to obtain main Episode information
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Episode {
     private String name;

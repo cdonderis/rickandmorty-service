@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * DTO to map Response
+ */
 public class CharacterDTO {
 
     public CharacterDTO(String name, List<String> episodes, Date firstApppearance) {
