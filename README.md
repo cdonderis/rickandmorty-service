@@ -32,10 +32,8 @@
 `docker run -p 8080:8080 rickandmortyservice:1.0`
 
 ## Some example requests
-Unique result
-`http://localhost:8080/character/findByName/Adjudicator+Rick`
-Some results
-`http://localhost:8080/character/findByName/Summer+Smith`
+1. Unique result `http://localhost:8080/character/findByName/Morty+Smith`
+2. Some results  `http://localhost:8080/character/findByName/Morty`
 
 ## Project Structure
 

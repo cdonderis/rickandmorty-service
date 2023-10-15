@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Character business
@@ -48,7 +46,7 @@ public class CharacterInfoServiceImpl implements CharacterInfoService {
     public List<CharacterDTO> findCharactersByName(String name) {
         log.info("Searching characters by name {}", name);
         try {
-            //Coverage
+
             if (name.isEmpty()) {
                 log.info("Empty name");
                 return null;
@@ -59,22 +57,21 @@ public class CharacterInfoServiceImpl implements CharacterInfoService {
 
             List<CharacterInfo> characters = CharacterInfoMapper.mapJsonToCharacterInfo(completeResponse.getBody());
 
-            //Coverage
             if (characters == null || characters.isEmpty()) {
                 log.info("We can't find results for character named {} ", name);
                 return null;
             }
 
-            setEpisodesInCharacter(characters);
+            List<CharacterInfo> uniqueCharacters = setEpisodesInCharacter(characters);
 
             List<CharacterDTO> charactersResponse = new ArrayList<>();
 
-            for (CharacterInfo character : characters) {
+            for (CharacterInfo character : uniqueCharacters) {
                 charactersResponse.add(mapDTO(character));
             }
 
             return charactersResponse;
-            //Coverage
+
         } catch (Exception e) {
             log.error("We can't find a character named {}", name);
             return null;
@@ -82,19 +79,37 @@ public class CharacterInfoServiceImpl implements CharacterInfoService {
     }
 
     /**
-     * Function to set episode information in each character
+     * Function to group episode information by character name
      *
      * @param characters
      */
-    private void setEpisodesInCharacter(List<CharacterInfo> characters) throws JsonProcessingException, ParseException {
-        for (CharacterInfo character : characters) {
-            List<Episode> episodeList = new ArrayList<>();
-            for (String episode : character.getEpisodePath()) {
-                Episode episodeInfo = getEpisodeInfo(episode);
-                episodeList.add(episodeInfo);
+    private List<CharacterInfo> setEpisodesInCharacter(List<CharacterInfo> characters) throws JsonProcessingException, ParseException {
+        //List that doesn't allow duplicate names
+        Set<String> uniqueCharacterNames = new HashSet<>();
+        //Final list with unique Characters
+        List<CharacterInfo> uniqueCharacters = new ArrayList<>();
+
+        for (CharacterInfo character : characters){
+            if (uniqueCharacterNames.add(character.getName())) {
+                uniqueCharacters.add(character);
             }
-            character.setEpisodes(episodeList);
         }
+
+        //Set episode in each unique character
+        for (CharacterInfo uniqueCharacter : uniqueCharacters){
+            List<Episode> episodeList = new ArrayList<>();
+            for (CharacterInfo character : characters){
+                if (uniqueCharacter.getName().equals(character.getName())){
+                    for (String episode : character.getEpisodePath()) {
+                        Episode episodeInfo = getEpisodeInfo(episode);
+                        episodeList.add(episodeInfo);
+                    }
+                }
+            }
+            uniqueCharacter.setEpisodes(episodeList);
+        }
+
+        return uniqueCharacters;
     }
 
     /**
